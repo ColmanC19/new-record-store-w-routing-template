@@ -6,9 +6,9 @@ class Album
   def initialize(attributes)
     @name = attributes.fetch(:name)
     @id = attributes.fetch(:id)
-    @release_year = attributes.fetch(:release_year)
+    @release_year = attributes.fetch(:release_year).to_i
     @genre = attributes.fetch(:genre)
-    @artist = attributes.fetch(:artist)
+    @artist = attributes.fetch(:artist).gsub("'", "''")
   end
 
   def save
@@ -17,9 +17,19 @@ class Album
     @id = result.first().fetch("id").to_i
   end
 
-  def update(name)
-    @name = name
+  def update(attributes)
+    attributes = attributes.reduce({}) do |acc, (key, val)|
+      acc[key.to_sym] = (val == '') ? nil : val
+      acc
+    end
+    @name = attributes.fetch(:name) || @name
+    @release_year = attributes.fetch(:release_year) || @release_year
+    @genre = attributes.fetch(:genre) || @genre
+    @artist = attributes.fetch(:artist) || @artist
     DB.exec("UPDATE albums SET name = '#{@name}' WHERE id = #{@id};")
+    DB.exec("UPDATE albums SET release_year = '#{@release_year}' WHERE id = #{@id};")
+    DB.exec("UPDATE albums SET genre = '#{@genre}' WHERE id = #{@id};")
+    DB.exec("UPDATE albums SET artist = '#{@artist}' WHERE id = #{@id};")
   end
 
 

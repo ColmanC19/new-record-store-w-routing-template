@@ -28,7 +28,7 @@ class Artist
   def self.clear
     DB.exec("DELETE FROM artists *;")
   end
-  
+
   def self.sort
     self.get_artists("SELECT * FROM artists ORDER BY lower(name);")
     # @albums.values.sort {|a, b| a.name.downcase <=> b.name.downcase}
@@ -56,6 +56,7 @@ class Artist
   end
 
   def delete
+    DB.exec("DELETE FROM albums_artists WHERE artist_id = #{@id};")
     DB.exec("DELETE FROM artists WHERE id = #{@id};")
   end
 

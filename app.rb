@@ -38,10 +38,10 @@ end
 
 post('/albums') do
   name = params[:album_name]
-  year = params[:year_name]
+  release_year = params[:release_year].to_i
   genre = params[:genre_name]
   artist = params[:artist_name]
-  album = Album.new(name, nil, year, genre, artist)
+  album = Album.new(:name => name, :id => nil, :release_year => release_year, :genre => genre, :artist => artist)
   album.save()
   @albums = Album.all()
   erb(:albums)
@@ -59,7 +59,7 @@ end
 
 patch('/albums/:id') do
 @album  = Album.find(params[:id].to_i())
-@album.update(params[:name], params[:year], params[:genre], params[:artist])
+@album.update(params)
 @albums = Album.all
 erb(:albums)
 end
@@ -82,7 +82,8 @@ end
 # Post a new song. After the song is added, Sinatra will route to the view for the album the song belongs to.
 post('/albums/:id/songs') do
   @album = Album.find(params[:id].to_i())
-  song = Song.new(params[:song_name], @album.id, nil)
+  params[:album_id] = params[:id]
+  song = Song.new(params)
   song.save()
   erb(:album)
 end
@@ -104,7 +105,47 @@ delete('/albums/:id/songs/:song_id') do
 end
 
 
+#Artists Routing¡! - -- - -- - - - - - - - >
 
+get('/artists') do
+  if params["clear"]
+    @artists = Artist.clear()
+  elsif params["search_input"]
+    @artists = Artist.search(params["search_input"])
+  elsif params["sort_list"]
+    @artists = Artist.sort()
+  else
+    @artists = Artist.all
+  end
+  erb(:artists)
+end
+
+get('/artists/:id') do
+  @artist = Artist.find(params[:id].to_i())
+  erb(:artists)
+end
+
+post('/artists') do
+  name = params[:album_name]
+  artist = Artist.new(name, nil)
+  artist.save()
+  @artists = Artist.all()
+  erb(:artists)
+end
+
+patch('/artists/:id') do
+@artist  = Artist.find(params[:id].to_i())
+@artist.update(params[:name])
+@artists = Artist.all
+erb(:artist)
+end
+
+delete('/artists/:id') do
+  @artist = Artist.find(params[:id].to_i())
+  @artist.delete()
+  @artists = Artist.all
+  erb(:artists)
+end
 
 # get('/custom_route') do
 #   "We can even create custom routes, but we should only do this when needed."

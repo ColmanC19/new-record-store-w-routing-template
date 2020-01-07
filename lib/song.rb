@@ -3,7 +3,7 @@ class Song
   attr_accessor :name, :album_id
 
   def initialize(attributes)
-    @name = attributes.fetch(:name)
+    @name = attributes[:name]
     @album_id = attributes.fetch(:album_id)
     @id = attributes.fetch(:id)
   end

@@ -26,7 +26,7 @@
 <ul>
   <% @albums.each do |album| %>
   <h4><a href="/albums/<%= album.id %>"><%= album.name %></a></h4>
-  <li>Release year: <%= album.year %></li>
+  <li>Release year: <%= album.release_year %></li>
   <li>Genre: <%= album.genre %></li>
   <li>Artist: <%= album.artist %></li>
   <% end %>

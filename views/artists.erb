@@ -1,0 +1,35 @@
+<h1 class="titles">"The Arti-BASE"</h1>
+
+<h3 class="titles">Available Artists</h3>
+
+<form action="/artists">
+  <div class="form-group">
+    <label for="search_input">Search</label>
+    <input id="search" name="search_input" class="form-control" type="text">
+  </div>
+  <button type="submit" class="danger">SEARCH!</button>
+</form>
+
+<form action="/artists" method="get">
+  <input name="clear_inputs" type="hidden" value="clear">
+  <button type="submit" name="clear">Clear Results</button>
+</form>
+
+<form action="/artists" method="get">
+  <input name="sort_list" type="hidden" value="search">
+  <button type="submit">Sort List</button>
+</form>
+
+
+
+<% if @artists.any? %>
+<ul>
+  <% @artists.each do |artist| %>
+  <h4><a href="/artists/<%= artist.id %>"><%= artist.name %></a></h4>
+  <% end %>
+</ul>
+<% else %>
+<p>There are currently no artists to display.</p>
+<% end %>
+
+<a href="/artists/new">Add a new artist</a>
