@@ -115,13 +115,13 @@ describe '#Album' do
 
   describe('#songs') do                 #returns songs from an album
     it("returns an album's songs") do
-      album = Album.new({:name => "Giant Steps", :album_id => nil, :release_year => 1990, :genre => "hiphop", :artist => "Johnny"})
-      album.save()
-      song = Song.new("Naima", album.id, nil)
+      @album = Album.new({:name => "Giant Steps", :id => nil, :release_year => 1990, :genre => "hiphop", :artist => "Johnny"})
+      @album.save()
+      song = Song.new({:name => "Naima", :album_id =>@album.id, :id => nil})
       song.save()
-      song2 = Song.new("Cousin Mary", album.id, nil)
+      song2 = Song.new({:name => "Giant Steps", :album_id =>@album.id, :id => nil})
       song2.save()
-      expect(album.songs).to(eq([song, song2]))
+      expect(@album.songs).to(eq([song, song2]))
     end
   end
 
